@@ -27,7 +27,9 @@ class PersonApi {
             do {
                 let json = try JSON(data: data)
                 let person = self.parsePerson(json: json)
-                completion(person)
+                DispatchQueue.main.async {
+                    completion(person)
+                }
             } catch {
                 debugPrint(error.localizedDescription)
                 completion(nil)
