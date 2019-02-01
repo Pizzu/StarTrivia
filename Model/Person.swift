@@ -15,8 +15,9 @@ struct Person {
     let hair : String
     let birthYear : String
     let gender : String
-    let homeworldUrl : [String]
+    let homeworldUrl : String
     let filmUrls : [String]
     let vehicleUrls : [String]
     let starshipUrls : [String]
 }
+

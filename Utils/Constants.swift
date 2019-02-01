@@ -11,7 +11,7 @@ import UIKit
 let BLACK_BG = UIColor.black.withAlphaComponent(0.6).cgColor
 
 // API ENDPOINTS
-let URL_BASE = "https://swapi.co/api"
+let URL_BASE = "https://swapi.co/api/"
 let PERSON_URL = URL_BASE + "people/"
 
 typealias PersonResponseCompletion = (Person?) -> Void
