@@ -21,6 +21,8 @@ class SelectPersonVC: UIViewController {
     @IBOutlet weak var starshipsBtn: UIButton!
     @IBOutlet weak var filmsBtn: UIButton!
     
+    var person: Person!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -30,33 +32,45 @@ class SelectPersonVC: UIViewController {
         let random = Int.random(in: 1 ... 87)
         PersonApi.instance.getRandomPerson(id: random) { (person) in
             if let person = person {
-                self.nameLabel.text = person.name
-                self.heightLabel.text = person.height
-                self.massLabel.text = person.mass
-                self.hairLabel.text = person.hair
-                self.birthLabel.text = person.birthYear
-                self.genderLabel.text = person.gender
-                
-                self.homeworldBtn.isEnabled = !person.homeworldUrl.isEmpty
-                self.vehiclesBtn.isEnabled = person.vehicleUrls.count > 0 ? true : false
-                self.starshipsBtn.isEnabled = person.starshipUrls.count > 0 ? true : false
-                self.filmsBtn.isEnabled = person.filmUrls.count > 0 ? true : false
+                self.setupView(person: person)
+                self.person = person
             }
         }
     }
     
-    @IBAction func homeworldPressed(_ sender: Any) {
+    func setupView(person: Person) {
+        nameLabel.text = person.name
+        heightLabel.text = person.height
+        massLabel.text = person.mass
+        hairLabel.text = person.hair
+        birthLabel.text = person.birthYear
+        genderLabel.text = person.gender
+        
+        homeworldBtn.isEnabled = !person.homeworldUrl.isEmpty
+        vehiclesBtn.isEnabled = person.vehicleUrls.count > 0 ? true : false
+        starshipsBtn.isEnabled = person.starshipUrls.count > 0 ? true : false
+        filmsBtn.isEnabled = person.filmUrls.count > 0 ? true : false
     }
     
-    @IBAction func vehiclesPressed(_ sender: Any) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toHomeworld" {
+            if let homewordVC = segue.destination as? HomeworldVC {
+                homewordVC.person = person
+            }
+        } else if segue.identifier == "toVehicles" {
+            if let vehiclesVC = segue.destination as? VehiclesVC {
+                vehiclesVC.person = person
+            }
+        } else if segue.identifier == "toStarships" {
+            if let starshipsVC = segue.destination as? StarshipsVC {
+                starshipsVC.person = person
+            }
+        } else if segue.identifier == "toFilms" {
+            if let filmsVC = segue.destination as? FilmsVC {
+                filmsVC.person = person
+            }
+        }
     }
-    
-    @IBAction func starshipsPressed(_ sender: Any) {
-    }
-    
-    @IBAction func filmsPressed(_ sender: Any) {
-    }
-    
-    
 }
+
 
