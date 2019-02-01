@@ -1,5 +1,5 @@
 //
-//  VehicleApi.swift
+//  StarshipApi.swift
 //  StarTrivia
 //
 //  Created by Luca Lo Forte on 01/02/2019.
@@ -10,12 +10,10 @@ import Foundation
 import Alamofire
 import SwiftyJSON
 
-class VehicleApi {
+class StarshipApi {
+    static let instance = StarshipApi()
     
-    static let instance = VehicleApi()
-    
-    func getVehicle(url: String, completion: @escaping VehicleResponseCompletion) {
-        
+    func getStarship(url: String, completion: @escaping StarshipResponseCompletion) {
         guard let url = URL(string: url) else { return }
         Alamofire.request(url).responseJSON { (response) in
             if let error = response.result.error {
@@ -26,9 +24,9 @@ class VehicleApi {
             guard let data = response.data else {return completion(nil)}
             do {
                 let json = try JSON(data: data)
-                let vehicle = self.parseVehicle(json: json)
+                let starship = self.parseStarship(json: json)
                 DispatchQueue.main.async {
-                    completion(vehicle)
+                    completion(starship)
                 }
             } catch {
                 debugPrint(error.localizedDescription)
@@ -37,7 +35,7 @@ class VehicleApi {
         }
     }
     
-    private func parseVehicle(json: JSON) -> Vehicle {
+    private func parseStarship(json: JSON) -> Starship {
         let name = json["name"].stringValue
         let model = json["model"].stringValue
         let manufacturer = json["manufacturer"].stringValue
@@ -46,8 +44,8 @@ class VehicleApi {
         let speed = json["max_atmosphering_speed"].stringValue
         let crew = json["crew"].stringValue
         let passengers = json["passengers"].stringValue
+        let capacity = json["cargo_capacity"].stringValue
         
-        return Vehicle(name: name, model: model, manufacturer: manufacturer , cost: cost, length: length, speed: speed, crew: crew, passengers: passengers)
+        return Starship(name: name, model: model, manufacturer: manufacturer, cost: cost, length: length, speed: speed, crew: crew, passengers: passengers, capacity: capacity)
     }
-    
 }
